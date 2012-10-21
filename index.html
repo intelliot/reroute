@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Route Alert!</title>
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<link rel="stylesheet" type="text/css" href="index.css" />
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script type="text/javascript" src="bootstrap.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript" src="index.js"></script>
+	</head>
+	<body style="margin: 0;">
+		<div class="carousel slide">
+			<div id="home-container" class="active item">
+				<img src="assets/routealertlogo.png" alt="logo" style="position: relative; width: 100%; margin: 10px"/>
+				<aside id="blurb">
+					<p>Receive SMS alerts for the transit lines you care about! Common notifications include delays, maintenance, rerouting due to street fairs, and nearby violent crimes.</p>
+				</aside>
+				<ul class="tableview">
+					<li id="select-route">
+						<div class="title">Choose your route</div>
+						<span class="subtitle">None currently selected.</span>
+						<img class="arrow" alt=">" src="assets/arrow.png" />
+					</li>
+					<li id="select-time">
+						<div class="title">Choose your time</div>
+						<span class="subtitle">Weekdays, 7am-10am and 5pm-7pm</span>
+						<img class="arrow" alt=">" src="assets/arrow.png" />
+					</li>
+				</ul>
+				<input id="phone-number-input" type="text" placeholder="Your phone number"><br>
+				<div id="phone-number-button" class="btn-success btn">Begin receiving sms alerts for your route!</div>
+			</div>
+
+			<div id="other-container" class="item">
+				<div id="route-container">
+					<div id="map_canvas" style="width: 100%; height: 300px;"></div>
+					<!-- <div id="map_canvas_shadow" style="width: 100%; height: 300px; position: absolute; z-index: 5;"></div> -->
+					<div id="route-message" class="message">You have not selected a route yet. Drag the markers to the end points of your commute.</div>
+					<div id="set-route-button" class="btn-primary btn">Set route!</div>
+					<div class="btn back-button">Go back</div>
+				</div>
+				<div id="time-container">
+					<span style="text-align: center;"><h1>Select the days</h1></span>
+					<div id="time-selector">
+						<div class="day btn btn-info">M</div>
+						<div class="day btn btn-info">T</div>
+						<div class="day btn btn-info">W</div>
+						<div class="day btn btn-info">Th</div>
+						<div class="day btn btn-info">F</div>
+						<div class="day btn">Sat</div>
+						<div class="day btn">Sun</div>
+					</div>
+					<div id="time-message" class="message">Weekdays</div>
+					<div id="set-time-button" class="btn-primary btn">Set time!</div>
+					<div class="btn back-button">Go back</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+</html>

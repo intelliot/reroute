@@ -1,0 +1,123 @@
+html, body {
+	margin: 0 auto;
+}
+
+#map_canvas_shadow {
+	-webkit-box-shadow: inset 0px 0px 30px 1px rgba(0,0,0,0.6);
+        box-shadow: inset 0px 0px 30px 1px rgba(0,0,0,0.6);
+	top: 0px;
+	left: 0px;
+}
+
+#blurb {
+	margin: 0px 34px 30px 34px;
+	font-size: 1.4em;
+}
+
+.tableview {
+	line-height: 20px;
+	font-size: 12px;
+	color: #999;
+	border-top: 1px solid #ddd;
+	margin: 0 -10px 20px;
+	clear: both;
+	list-style: none;
+}
+
+	.tableview li {
+		background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#fafafa), color-stop(0.5, #fafafa), to(#eee)); height:40px; -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,1); border-bottom:1px solid #ddd; padding:9px 41px 9px 10px; position:relative; overflow:hidden;
+		padding-left: 20px;
+		position: relative;
+		cursor: pointer;
+	}
+
+		.tableview .title {
+			color: black;
+			font-size: 1.4em;
+			margin-left: 22px;
+			text-shadow: 0px 1.5px rgba(255, 255, 255, 1);
+		}
+
+		.tableview .subtitle {
+			font-style: italic;
+			margin-left: 22px;
+		}
+
+		.tableview .arrow {
+			height: 20px;
+			position: absolute;
+			right: 40px;
+			top: 18px;
+		}
+
+	.message {
+		color: #999;
+		font-size: 2em;
+		padding: 1em 0px 1em 0px;
+		text-align: center;
+		text-shadow: 0px -1px rgba(0, 0, 0, 1), 0px 1px rgba(255, 255, 255, 1);
+	}
+
+	#route-container {
+		width: 100%;
+	}
+
+	#set-route-button, #set-time-button {
+		font-size: 2em;
+		height: 2em;
+		margin: 0 5% 0 5%;
+		padding-top: 1.2em;
+		width: 85%;
+		cursor: pointer;
+		text-shadow: 0px -2px rgba(0, 0, 0, 0.4);
+	}
+
+	.back-button {
+		font-size: 1.4em;
+		width: 85%;
+		margin: 5% 5% 0 5%;
+		cursor: pointer;
+	}
+
+#route-container {
+	height: 100%;
+	width: 100%;
+}
+
+#time-container {
+	height: 100%;
+	width: 100%;
+}
+
+.none {
+	position: absolute;
+	left: -99999px;
+}
+
+#phone-number-input {
+	height: 1.4em;
+	font-size: 2em;
+	line-height: 1.7em;
+	width: 85%;
+	margin: 3% 5% 0 5%;
+}
+
+#phone-number-button {
+	height: 1.3em;
+	width: 85%;
+	padding-top: 0.7em;
+	margin: 5% 5% 0 5%;
+	font-size: 2em;
+}
+
+#time-selector {
+	width: 100%;
+	margin: 5%;
+}
+
+#time-selector .day {
+	width: 49px;
+	height: 1.4em;
+	padding-top: 0.6em;
+	font-size: 2em;
+}
