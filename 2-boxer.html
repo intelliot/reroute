@@ -51,6 +51,8 @@ function getSelectedTravelMode()
       value = google.maps.DirectionsTravelMode.BICYCLING;
     } else if (value == 'walking') {
       value = google.maps.DirectionsTravelMode.WALKING;
+    } else if (value == 'transit') {
+      value = google.maps.DirectionsTravelMode.TRANSIT;
     } else {
       alert('Unsupported travel mode.');
     }
@@ -204,7 +206,8 @@ body {
     <select onchange="getDirections();" id="travel-mode-input">
       <option value="driving">By car</option>
       <option value="bicycling">Bicycling</option>
-      <option value="walking" selected="selected">Walking</option>
+      <option value="walking">Walking</option>
+      <option value="transit" selected="selected">Transit</option>
     </select>
     <select onchange="getDirections();" id="unit-input">
       <option value="imperial" selected="selected">Imperial</option>
