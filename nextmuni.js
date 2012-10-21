@@ -138,7 +138,7 @@ function loadPrediction(stopId, routeTag) {
 							} else if (pred.epochTime - pred.scheduledTime < - 1 * 60 * 1000) {
 								timediv.addClass("early");
 								var minutesEarly = -Math.round((pred.epochTime - pred.scheduledTime) / 1000 / 60);
-								timediv.append(" (" + minutesLate + " minutes early!)");
+								timediv.append(" (" + minutesEarly + " minutes early!)");
 							} else {
 								timediv.addClass("ontime");
 							}
