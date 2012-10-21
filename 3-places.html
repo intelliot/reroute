@@ -115,11 +115,11 @@ function initialize() {
   dirRenderer = new google.maps.DirectionsRenderer({ map: map });
   
   // Places search
-  var request = {
-    location: sanFrancisco,
-    radius: 1600,
-    keyword: 'category:landmark'
-  };
+  // var request = {
+  //   location: sanFrancisco,
+  //   radius: 1600,
+  //   keyword: 'category:landmark'
+  // };
 
   infowindow = new google.maps.InfoWindow();
 
@@ -148,8 +148,30 @@ function createMarker(place) {
   });
 
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent('<font face="Arial">'+place.name+"</font>");
+
+    request = {
+      reference: place.reference
+    };
+
+    service = new google.maps.places.PlacesService(map);
+    service.getDetails(request, function(place2, status) {
+      // got place details
+      
+infowindow.setContent('<font face="Arial"><font size="3"><b>'+place.name+"</b></font><br><small><font color='#555'>"+description+"</font></small><br>"+ place2.formatted_address +"<br><a href='"+place2.url+"'>more info</a></font>");
+
+    });
+
+    var description = (place.types[0]);
+    if (place.types[1]) {
+      description += " • "+ place.types[1];
+    }
+    description=description.split('_').join(' ');
+    
+    infowindow.setContent('<font face="Arial"><font size="3"><b>'+place.name+"</b></font><br><small><font color='#555'>"+description+"</font></small></font>");
     infowindow.open(map, this);
+
+
+    
   });
 }
 
@@ -162,19 +184,21 @@ function drawBoxes(boxes) {
 
 var request = {
   bounds: boxes[i],
+  //query: 'category: landmark'
   keyword: 'category: landmark'
 };
 var service = new google.maps.places.PlacesService(map);
+//service.textSearch(request, callback);
 service.search(request, callback);
 
-	// boxpolys[i] = new google.maps.Rectangle({
-	//   bounds: boxes[i],
-	//   fillOpacity: 0,
-	//   strokeOpacity: 1.0,
-	//   strokeColor: '#000000',
-	//   strokeWeight: 1,
-	//   map: map
-	// });
+	boxpolys[i] = new google.maps.Rectangle({
+	  bounds: boxes[i],
+	  fillOpacity: 0,
+	  strokeOpacity: 1.0,
+	  strokeColor: '#000000',
+	  strokeWeight: 1,
+	  map: map
+	});
   }
 }
 
