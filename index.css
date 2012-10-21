@@ -121,3 +121,12 @@ html, body {
 	padding-top: 0.6em;
 	font-size: 2em;
 }
+
+.pred.minutes {font-weight: bold}
+.pred.seconds, .sched.seconds {display: none}
+.late {color: orange}
+.verylate {color: red}
+.early {color: purple}
+.ontime {color: green}
+.missing {color: blue}
+.unscheduled {}

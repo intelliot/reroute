@@ -89,10 +89,10 @@ function loadPrediction(stopId, routeTag) {
 					return;
 				}
 				div.empty();
-				$("<h1>").appendTo(div).text(routeConfig.title)
+				$("<h2>").appendTo(div).text(routeConfig.title)
 				for (var i = 0; i < directions.length; i++) {
 					var dir = directions[i];
-					$("<h2>").appendTo(div).text(dir.title)
+					$("<h3>").appendTo(div).text(dir.title)
 					var lastPredictionIdx;
 					for (var j = 0; j < dir.predictions.length; j++) {
 						if (dir.predictions[j].epochTime != null) lastPredictionIdx = j;
