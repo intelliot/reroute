@@ -1,0 +1,266 @@
+
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=true"></script>
+  <!--&key=AIzaSyAGbELbKt49rAuOH7--yWCObL5xTxSGjpQ-->
+	<script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/routeboxer/src/RouteBoxer.js" type="text/javascript"></script>
+	
+	
+<script type="text/javascript">
+
+var mapContainer = null;
+var dirContainer = null;
+var fromInput = null;
+var toInput = null;
+var travelModeInput = null;
+var unitInput = null;
+
+var dirService = null;
+var dirRenderer = null;
+var map = null;
+var routeBoxer = null;
+var distance = null; // km
+
+function showDirections(dirResult, dirStatus)
+{
+
+
+    if (dirStatus != google.maps.DirectionsStatus.OK) {
+      alert('Directions failed: ' + dirStatus);
+      return;
+    }
+
+    // Show directions
+	dirRenderer.setMap(map);
+	dirRenderer.setPanel(dirContainer);
+	dirRenderer.setDirections(dirResult);
+    
+    // Box around the overview path of the first route
+    var path = dirResult.routes[0].overview_path;
+    var boxes = routeBoxer.box(path, distance);
+    drawBoxes(boxes);
+    
+}
+
+function getSelectedTravelMode()
+{
+    var value =
+        travelModeInput.options[travelModeInput.selectedIndex].value;
+    if (value == 'driving') {
+      value = google.maps.DirectionsTravelMode.DRIVING;
+    } else if (value == 'bicycling') {
+      value = google.maps.DirectionsTravelMode.BICYCLING;
+    } else if (value == 'walking') {
+      value = google.maps.DirectionsTravelMode.WALKING;
+    } else if (value == 'transit') {
+      value = google.maps.DirectionsTravelMode.TRANSIT;
+    } else {
+      alert('Unsupported travel mode.');
+    }
+    return value;
+}
+
+function getSelectedUnitSystem()
+{
+    return unitInput.options[unitInput.selectedIndex].value == 'metric' ?
+        google.maps.DirectionsUnitSystem.METRIC :
+        google.maps.DirectionsUnitSystem.IMPERIAL;
+}
+
+function getDirections()
+{
+	clearBoxes();
+	
+	// Convert the distance to box around the route from miles to km
+	distance = parseFloat(document.getElementById("distance").value) * 1.609344;
+	
+    var fromStr = fromInput.value;
+    var toStr = toInput.value;
+    var dirRequest = {
+      origin: fromStr,
+      destination: toStr,
+      travelMode: getSelectedTravelMode(),
+      unitSystem: getSelectedUnitSystem(),
+      provideRouteAlternatives: true
+    };
+	dirService.route(dirRequest, showDirections);
+	
+	
+}
+
+var infoWindow;
+
+function initialize() {
+  var sanFrancisco = new google.maps.LatLng(37.77493, -122.419415);
+
+	var mapOptions = {
+		center: sanFrancisco,
+		mapTypeId: google.maps.MapTypeId.ROADMAP,
+		zoom: 13
+	};
+	
+	mapContainer = document.getElementById('map-container');
+	dirContainer = document.getElementById('dir-container');
+	fromInput = document.getElementById('from-input');
+	toInput = document.getElementById('to-input');
+	travelModeInput = document.getElementById('travel-mode-input');
+	unitInput = document.getElementById('unit-input');
+	
+	map = new google.maps.Map(mapContainer, mapOptions);
+
+  routeBoxer = new RouteBoxer();
+  
+  dirService = new google.maps.DirectionsService();
+  dirRenderer = new google.maps.DirectionsRenderer({ map: map });
+  
+  // Places search
+  var request = {
+    location: sanFrancisco,
+    radius: 1600,
+    keyword: 'category:landmark'
+  };
+
+  infowindow = new google.maps.InfoWindow();
+
+  var service = new google.maps.places.PlacesService(map);
+  service.search(request, callback);
+}
+
+function callback(results, status) {
+  if (status == google.maps.places.PlacesServiceStatus.OK) {
+    for (var i = 0; i < results.length; i++) {
+      var place = results[i];
+      createMarker(results[i]);
+    }
+  } else {
+    alert('No landmarks found. Search failed or returned no results.');
+  }
+  
+}
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent('<font face="Arial">'+place.name+"</font>");
+    infowindow.open(map, this);
+  });
+}
+
+var boxpolys = null;
+
+// Draw the array of boxes as polylines on the map
+function drawBoxes(boxes) {
+  boxpolys = new Array(boxes.length);
+  for (var i = 0; i < boxes.length; i++) {
+	boxpolys[i] = new google.maps.Rectangle({
+	  bounds: boxes[i],
+	  fillOpacity: 0,
+	  strokeOpacity: 1.0,
+	  strokeColor: '#000000',
+	  strokeWeight: 1,
+	  map: map
+	});
+  }
+}
+
+// Clear boxes currently on the map
+function clearBoxes() {
+  if (boxpolys != null) {
+	for (var i = 0; i < boxpolys.length; i++) {
+	  boxpolys[i].setMap(null);
+	}
+  }
+  boxpolys = null;
+}
+
+</script>
+	
+	
+</head>
+<body onload="initialize();">
+
+<style>
+body {
+  font-size: 0.8em;
+}
+
+#map-container, #side-container, #side-container li {
+  float: left;
+}
+
+#map-container {
+  width: 500px;
+  height: 600px;
+}
+
+#side-container {
+  border: 1px solid #bbb;
+  margin-right: 5px;
+  padding: 2px 4px;
+  text-align: right;
+  width: 260px;
+}
+#side-container ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#side-container li input {
+  font-size: 0.85em;
+  width: 210px;
+}
+#side-container .dir-label {
+  font-weight: bold;
+  padding-right: 3px;
+  text-align: right;
+  width: 40px;
+}
+
+#dir-container {
+  height: 525px;
+  overflow: auto;
+  padding: 2px 4px 2px 0;
+}
+#dir-container table {
+  font-size: 1em;
+  width: 100%;
+}
+</style>
+
+<div id="side-container">
+  <ul>
+  Box within at least
+    <input type="text" id="distance" value="0.3" size="2">miles
+    of the route<br/>
+    <li class="dir-label">From:</li>
+    <li><input id="from-input" type=text value="414 Brannan Street, San Francisco, CA"/></li>
+    <br clear="both"/>
+    <li class="dir-label">To:</li>
+    <li><input id="to-input" type=text value="375 Laguna Honda Boulevard, San Francisco, CA 94116"/></li>
+  </ul>
+  <div>
+    <select onchange="getDirections();" id="travel-mode-input">
+      <option value="driving">By car</option>
+      <option value="bicycling">Bicycling</option>
+      <option value="walking">Walking</option>
+      <option value="transit" selected="selected">Transit</option>
+    </select>
+    <select onchange="getDirections();" id="unit-input">
+      <option value="imperial" selected="selected">Imperial</option>
+      <option value="metric">Metric</option>
+    </select>
+    <input onclick="getDirections();" type=button value="Go!"/>
+  </div>
+  <div id="dir-container"></div>
+</div>
+<div id="map-container"></div>
+
+
+</body>
+</html>
