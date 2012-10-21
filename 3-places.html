@@ -123,8 +123,8 @@ function initialize() {
 
   infowindow = new google.maps.InfoWindow();
 
-  var service = new google.maps.places.PlacesService(map);
-  service.search(request, callback);
+  // var service = new google.maps.places.PlacesService(map);
+  // service.search(request, callback);
 }
 
 function callback(results, status) {
@@ -133,9 +133,10 @@ function callback(results, status) {
       var place = results[i];
       createMarker(results[i]);
     }
-  } else {
-    alert('No landmarks found. Search failed or returned no results.');
   }
+  //  else {
+  //   alert('No landmarks found. Search failed or returned no results.');
+  // }
   
 }
 
@@ -158,14 +159,22 @@ var boxpolys = null;
 function drawBoxes(boxes) {
   boxpolys = new Array(boxes.length);
   for (var i = 0; i < boxes.length; i++) {
-	boxpolys[i] = new google.maps.Rectangle({
-	  bounds: boxes[i],
-	  fillOpacity: 0,
-	  strokeOpacity: 1.0,
-	  strokeColor: '#000000',
-	  strokeWeight: 1,
-	  map: map
-	});
+
+var request = {
+  bounds: boxes[i],
+  keyword: 'category: landmark'
+};
+var service = new google.maps.places.PlacesService(map);
+service.search(request, callback);
+
+	// boxpolys[i] = new google.maps.Rectangle({
+	//   bounds: boxes[i],
+	//   fillOpacity: 0,
+	//   strokeOpacity: 1.0,
+	//   strokeColor: '#000000',
+	//   strokeWeight: 1,
+	//   map: map
+	// });
   }
 }
 
